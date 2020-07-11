@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:slim/slim.dart';
 
-class VideoStreamService {
+class VideoStreamUrlService extends SlimApi {
+  VideoStreamUrlService() : super("https://www.youtube.com");
+
   String _parseAdaptiveFormat(adaptiveFormat) {
     var res = (adaptiveFormat['url'] ?? adaptiveFormat['cipher']).toString();
     res = Uri.decodeQueryComponent(res.substring(res.indexOf('https')));
@@ -17,9 +19,14 @@ class VideoStreamService {
   Future<List<String>> getUrls(String url) async {
     var videoStreams = List<String>();
     try {
-      var surl =
-          "https://www.youtube.com/get_video_info?video_id=$url&eurl=https://youtube.googleapis.com/v/$url";
-      var res = await http.get(surl);
+      var res = await get(
+        'get_video_info',
+        queryParams: {
+          "video_id": url,
+          "eurl": "https://youtube.googleapis.com/v/$url"
+        },
+      );
+
       var params = res.body.split('&');
       for (var i = 0; i < params.length; i++) {
         if (params[i].startsWith('player_response')) {

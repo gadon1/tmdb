@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  slim: ^4.2.2
+  slim: ^4.2.6
   flutter_platform_widgets: ^0.51.0
   shared_preferences: ^0.5.8
   video_player: ^0.10.11+2

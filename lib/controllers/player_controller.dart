@@ -29,7 +29,7 @@ class PlayerController extends SlimController {
 
     if (_videoPlayerController != null) return _videoPlayerController;
     final response =
-        await VideoStreamService().getUrls(movie.videoList.videos.first.key);
+        await VideoStreamUrlService().getUrls(movie.videoList.videos.first.key);
     print("video url: ${response.first}");
     _videoPlayerController = VideoPlayerController.network(response.first);
     await _videoPlayerController.initialize();

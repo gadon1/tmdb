@@ -5,7 +5,7 @@ import 'package:tmdb/controllers/movies_controller.dart';
 import 'package:tmdb/screens/widgets/cached_image.dart';
 import 'package:tmdb/screens/widgets/player.dart';
 import '../../../model/movie.dart';
-import 'rate.dart';
+import '../rate/rate.dart';
 
 class MovieInfo extends StatelessWidget {
   final MoviesController controller;
@@ -53,7 +53,7 @@ class MovieInfo extends StatelessWidget {
                             .headline6
                             .copyWith(color: Colors.white),
                       ),
-                      Rate(movie.voteAverage),
+                      Rate(movie.voteAverage / 10),
                       SizedBox(height: 10),
                       PlatformText(
                         movie.overview,

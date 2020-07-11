@@ -6,19 +6,12 @@ import 'package:tmdb/model/video_list.dart';
 class MovieService extends SlimApi {
   MovieService() : super("https://api.themoviedb.org/3/movie");
 
-  String _addApiKey(String serviceUrl) =>
-      "$serviceUrl${serviceUrl.contains('?') ? '&' : '?'}api_key=21cc2fdd836ffd25061f0f849e6e468e";
-
   @override
-  Future<SlimResponse> post(String serviceUrl, body, {String extra}) =>
-      super.post(_addApiKey(serviceUrl), body, extra: extra);
-
-  @override
-  Future<SlimResponse> get(String serviceUrl, {String extra}) =>
-      super.get(_addApiKey(serviceUrl), extra: extra);
+  Map<String, dynamic> createQuery(SlimApiMethod method, {String extra}) =>
+      {"api_key": "21cc2fdd836ffd25061f0f849e6e468e"};
 
   Future<PopularMoviesPage> getPopularMovies(int page) async {
-    final response = await getMovies(page: page);
+    final response = await get("popular", queryParams: {"page": page});
     return PopularMoviesPage.fromRawJson(response.body);
   }
 
@@ -26,6 +19,4 @@ class MovieService extends SlimApi {
     final response = await get("${movie.id}/videos");
     return VideoList.fromRawJson(response.body);
   }
-
-  Future<SlimResponse> getMovies({int page = 1}) => get("popular?page=$page");
 }
