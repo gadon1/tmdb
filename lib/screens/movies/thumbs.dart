@@ -7,20 +7,20 @@ import 'package:tmdb/screens/widgets/cached_image.dart';
 class Thumbs extends SlimWidget<MoviesController> {
   @override
   Widget slimBuild(BuildContext context, MoviesController controller) =>
-      controller.popularMovies.isEmpty
+      controller.movies.isEmpty
           ? Center(child: PlatformCircularProgressIndicator())
-          : SingleChildScrollView(
+          : GridView.count(
+              semanticChildCount: controller.movies.length,
               controller: controller.scrollController,
-              child: Wrap(
-                children: [
-                  for (var page in controller.popularMovies)
-                    for (var movie in page.movies)
-                      GestureDetector(
-                        onTap: () => controller.selectMovie(movie),
-                        child: CachedImage(movie, controller.moviePosterWidth,
-                            controller.moviePosterHeight),
-                      )
-                ],
-              ),
+              crossAxisCount: controller.isWideScreen ? 3 : 2,
+              cacheExtent: controller.moviePosterHeight * 3,
+              childAspectRatio: 2 / 3,
+              children: <Widget>[
+                ...controller.movies.map((e) => GestureDetector(
+                      onTap: () => controller.selectMovie(e),
+                      child: CachedImage(e, controller.moviePosterWidth,
+                          controller.moviePosterHeight),
+                    ))
+              ],
             );
 }

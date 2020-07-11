@@ -11,7 +11,7 @@ import 'package:tmdb/services/movie_service.dart';
 class MoviesController extends SlimController {
   static SharedPreferences _sp;
   int currentPage = 0;
-  List<PopularMoviesPage> popularMovies = [];
+  List<Movie> movies = [];
   ScrollController scrollController;
   Movie selectedMovie;
   MovieService movieService = MovieService();
@@ -55,7 +55,7 @@ class MoviesController extends SlimController {
     if (await ConnectivityUtils.instance.isPhoneConnected()) {
       final page = await movieService.getPopularMovies(currentPage);
       _sp.setString(_pageKey, page.toRawJson());
-      popularMovies.add(page);
+      movies.addAll(page.movies);
       updateUI();
       return;
     }
@@ -63,7 +63,7 @@ class MoviesController extends SlimController {
     if (_sp.containsKey(_pageKey)) {
       final page = PopularMoviesPage.fromRawJson(_sp.getString(_pageKey));
       _sp.setString(_pageKey, page.toRawJson());
-      popularMovies.add(page);
+      movies.addAll(page.movies);
       updateUI();
       return;
     }
